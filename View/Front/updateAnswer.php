@@ -7,7 +7,7 @@
     if (isset ($_POST ["contenu"]) && isset ($_POST ["id_auteur"])){
       if (!empty ($_POST ["contenu"]) && !empty($_POST ["id_auteur"])){
         $idQuestion = $answerC->getIdQuestion1($_GET["idAnswer"]);
-        $answer = new answer(NULL, $_POST ["contenu"], $_POST ["id_auteur"], date('Y-m-d'), $idQuestion);
+        $answer = new answer(NULL, $_POST ["contenu"], $_POST ["id_auteur"], date('Y-m-d H:i:s'), $idQuestion);
         $r=$answerC->updateAnswer($answer,$_GET["idAnswer"]);
         header('location:showOnce.php?idQuestion=' . $idQuestion);
         }

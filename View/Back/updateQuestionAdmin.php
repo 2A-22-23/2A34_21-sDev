@@ -21,7 +21,7 @@
     $list = $questionC->findQuestion($_GET['idQuestion']);
     if (isset ($_POST ["titre"])&& isset ($_POST ["contenu"]) && isset ($_POST ["id_auteur"])){
         if (!empty ($_POST ["titre"])&& !empty ($_POST ["contenu"]) && !empty($_POST ["id_auteur"])){
-            $question = new question(NULL, $_POST ["titre"], $_POST ["contenu"], $_POST ["id_auteur"], date('Y-m-d'));
+            $question = new question(NULL, $_POST ["titre"], $_POST ["contenu"], $_POST ["id_auteur"], date('Y-m-d H:i:s'));
             $questionC = new questionC();
             $r=$questionC->updateQuestion($question,$_GET['idQuestion']);
             header('location:viewForum.php');

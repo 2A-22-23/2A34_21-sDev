@@ -49,7 +49,7 @@
     </table>
     <br><br><br>
     <div class="d-flex justify-content-center align-items-center">
-        <a href="addQuestionAdmin.php">
+        <a href="addAnswerAdmin.php?idQuestion=<?= $_GET['idQuestion'] ?>">
             <button type="button" class="btn btn-secondary" style="height:40px;" data-toggle="modal" data-target="#myModal">
                 Add Reply
             </button>

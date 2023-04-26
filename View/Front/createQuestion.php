@@ -3,7 +3,7 @@
     require_once '../../Controller/questionC.php';
     if (isset ($_POST ["titre"]) && isset ($_POST ["contenu"]) && isset ($_POST ["id_auteur"])){
         if (!empty ($_POST ["titre"]) && !empty ($_POST ["contenu"]) && !empty($_POST ["id_auteur"])){
-            $question1 = new question(NULL, $_POST ["titre"], $_POST ["contenu"], $_POST ["id_auteur"], date('Y-m-d'));
+            $question1 = new question(NULL, $_POST ["titre"], $_POST ["contenu"], $_POST ["id_auteur"], date('Y-m-d H:i:s'));
             $questionC = new questionC();
             $questionC->createQuestion($question1);
             header('location:listQuestions.php');

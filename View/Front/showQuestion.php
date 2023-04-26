@@ -22,4 +22,22 @@ if (isset($_GET['idQuestion']) && !empty($_GET['idQuestion'])) {
         echo $e->getMessage();
     }
 }
+if (isset($_GET['idQuestion']) && !empty($_GET['idQuestion'])) {
+    $idOfTheQuestion = $_GET['idQuestion'];
+    $pdo = config::getConnexion();
+    $list = $pdo->prepare("SELECT COUNT(*) FROM votes WHERE idQuestion = :id AND type = -1");
+    $list->bindValue(':id', $idOfTheQuestion, PDO::PARAM_INT);
+    $list->execute();
+    $dislikesCount1 = $list->fetchColumn();
+ }
+
+ if (isset($_GET['idQuestion']) && !empty($_GET['idQuestion'])) {
+    $idOfTheQuestion = $_GET['idQuestion'];
+    $pdo = config::getConnexion();
+    $list = $pdo->prepare("SELECT COUNT(*) FROM votes WHERE idQuestion = :id AND type = 1");
+    $list->bindValue(':id', $idOfTheQuestion, PDO::PARAM_INT);
+    $list->execute();
+    $likesCount1 = $list->fetchColumn();
+ }
+
 ?>

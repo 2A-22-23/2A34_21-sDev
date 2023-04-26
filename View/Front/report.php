@@ -1,10 +1,15 @@
 <?php
-    require '../../Controller/questionC.php';
-    $questionC = new questionC();
-    $list = $questionC->listQuestions();
+    require_once '../../Model/report.php';
+    require_once '../../Controller/reportC.php';
+    if (isset ($_POST ["cause"]) && isset ($_POST ["description"]) && isset ($_POST ["id_auteur"])){
+        if (!empty ($_POST ["cause"]) && !empty ($_POST ["description"]) && !empty($_POST ["id_auteur"])){
+            $report1 = new report(NULL, $_GET ["idQuestion"], $_POST ["id_auteur"], $_POST ["cause"], $_POST["description"]);
+            $reportC = new reportC();
+            $reportC->createReport($report1);
+            header('location:listQuestions.php');
+        }
+    }
 ?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,10 +25,10 @@
     <div class="breadcrumbs d-flex align-items-center" style="background-image: url('assets/img/breadcrumbs-bg.jpg');">
       <div class="container position-relative d-flex flex-column align-items-center" data-aos="fade">
 
-        <h2>Forum</h2>
+        <h2>Publish report</h2>
         <ol>
           <li><a href="index.php">Home</a></li>
-          <li>Forum</li>
+          <li>Publish report</li>
         </ol>
 
       </div>
@@ -41,72 +46,100 @@
 
 
   </main><!-- End #main -->
-    
-  <form method="GET" style="text-align: center;">
-  <div class="form-group row">
-    <div>
-      <input type="search" name="search" class="DocSearch-Input" placeholder="Search By Title">
-    </div>
-    <br>
-    <br>
-    <div>
-      <div style="display: inline-block;">
-        <button class="btn btn-success" type="submit" style="background-color: black;"><i class="fa fa-search"></i></button>
-      </div>
-    </div>
-  </div>
-  </form>
+  <form action="" method="POST">
+        <label for="cause">Cause :</label>
+        <select name="cause" id="cause">
+            <option value="Violence">Violence</option>
+            <option value="Terrorisme">Terrorisme</option>
+            <option value="Harcélement">Harcélement</option>
+            <option value="Discours haineux ">Discours haineux </option>
+            <option value="Fausses Informations">Fausses Informations</option>
+            <option value="Suicide">Suicide</option>
+            <option value="Contenu indésirable">Contenu indésirable</option>
+            <option value="Autre choses">Autres choses</option>
+        </select>
+        <br><br><br>
+        <label for="description"> Description </label>
+        <textarea name="description" id="description"></textarea>
+        <br><br><br>
+        <label for="id_auteur"> Id auteur </label>
+        <input type="number" name="id_auteur" id="id_auteur" oninput="validateInput('id_auteur', /^\d+$/)">
+        <span id="id_auteur_span"></span>
+        <br>
+        <br>
+        <input type="submit" value="Submit">
+        <input type="reset" value="Reset">
+        <br>
+        <br>
+    </form>
+    <div id="alerte"> </div>
+    <script>
+    function validateInput(inputId, regex) {
+        const input = document.getElementById(inputId);
+        const span = document.getElementById(`${inputId}_span`);
 
+        if (regex.test(input.value)) {
+        span.innerText = 'Correct';
+        span.style.color = 'green';
+        } else {
+        span.innerText = 'Incorrect';
+        span.style.color = 'red';
+        }
+    }
+  </script> 
 
-    <br>
-    <br>
-    
-    <div style="text-align: center;">
-        <a href="createQuestion.php" style="background-color: #fcc903;" class="btn btn-primary" > 
-        <i class="fa fa-plus-square" aria-hidden="true"></i> Add Question </a>
-    </div>
-    <br>
-    <br>
-                <?php foreach ($list as $row){ ?>
-                <?php 
-                      require 'likesCount.php';
-                      require 'dislikesCount.php';
-                ?>
-                <div class="card text-center">
-                    <div class="card-header">
-                    <h2><?= $row['id_auteur'] ?></h2>
-                    </div>
-                    <div class="card-body">
-                        <a href="showOnce.php?idQuestion=<?= $row['idQuestion'] ?>"> <h5 class="card-title"> <?= $row['titre'] ?> </h5> </a>
-                        <p class="card-text"> <?= $row['contenu'] ?> </p>
-                        <a href="deleteQuestion.php?idQuestion=<?= $row['idQuestion'] ?>" style="background-color: #ff0000;" class="btn btn-primary">
-                        <i class="fa fa-trash" aria-hidden="true"></i></a>
-                        <a href="updateQuestion.php?idQuestion=<?= $row['idQuestion'] ?>" style="background-color: #fcc903;" class="btn btn-primary">
-                        <i class="fa fa-pencil" aria-hidden="true"></i></a>
-                        <a href="showOnce.php?idQuestion=<?= $row['idQuestion'] ?>" style="background-color: #fcc903;" class="btn btn-primary">
-                        <i class="fa fa-reply" aria-hidden="true"></i></a>
-                        <a href="report.php?idQuestion=<?= $row['idQuestion'] ?>" style="background-color: #ff0000;" class="btn btn-primary">
-                        <i class="fa fa-flag" aria-hidden="true"></i></a>
-                        <br><br>
-                        <a href="like.php?idQuestion=<?= $row['idQuestion'] ?>" style="background-color: #22ff00;" class="btn btn-primary">
-                        <i class="fa fa-thumbs-up" aria-hidden="true"></i></a>
-                        <i><?=$likesCount?></i>
-                        <a href="dislike.php?idQuestion=<?= $row['idQuestion'] ?>" style="background-color: #bcbcbc;" class="btn btn-primary">
-                        <i class="fa fa-thumbs-down" aria-hidden="true"></i></a>
-                        <i><?=$dislikesCount?></i>
-                    </div>
-                    <div class="card-footer text-muted">
-                        <p><?= $row['date_publication'] ?></p>
-                    </div>
-                </div>
-                <br>
-                <hr style="border: 5px solid black;">
-                <br>
-                <?php
-                }
-                ?>
-
-        
+<style>
+    form {
+        margin: 0 auto;
+        width: 50%;
+        text-align: center; /* Ajout d'un alignement centré pour les boutons */
+    }
+    label {
+        display: inline-block;
+        width: 20%;
+        margin-bottom: 5px;
+        text-align: right; /* Ajout d'un alignement à droite pour les labels */
+    }
+    input[type="text"], textarea, input[type="number"] {
+        display: inline-block;
+        width: 75%;
+        padding: 5px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        margin-bottom: 10px;
+    }
+    select{
+        display: inline-block;
+        width: 75%;
+        padding: 5px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        margin-bottom: 10px;
+    }
+    #alerte {
+        display: inline-block;
+        color: red;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+    .btn-container {
+        margin-top: 10px; /* Ajout d'une marge supérieure pour le conteneur */
+        text-align: center; /* Ajout d'un alignement centré pour le conteneur */
+    }
+    input[type="submit"], input[type="reset"] {
+        background-color: #fcc903;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-right: 10px;
+    }
+    label[for="description"], #contenu {
+        display: inline-block;
+        vertical-align: top;
+    }
+</style>
 <br>
 <br>
   <!-- ======= Footer ======= -->

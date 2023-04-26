@@ -35,7 +35,25 @@
             }
         }
       
-
+        
+        public function reportQ(int $idQuestion)
+        {
+            $pdo = config::getConnexion();
+            $list = $pdo->prepare("SELECT COUNT(r.idReport) FROM questions q LEFT JOIN reports r ON q.idQuestion = r.idQuestion WHERE q.idQuestion = :id;");
+            $list->bindValue(':id', $idQuestion, PDO::PARAM_INT);
+            $list->execute();
+            $reportCount = $list->fetchColumn();
+            if($reportCount > 2)
+            {
+                $sql = 'DELETE FROM `questions` WHERE idQuestion = '.$idQuestion.'';
+                $list = $pdo->prepare($sql);
+                $list->execute();
+                $result = $list->fetchAll();
+                return $result;
+            }
+        }
+        
+        
         public function delete(int $idQuestion){
             $sql = 'DELETE FROM `questions` WHERE idQuestion = '.$idQuestion.'';
             $pdo = config::getConnexion();

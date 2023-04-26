@@ -7,6 +7,10 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
        <link rel="stylesheet" href="./assets/css/style.css"></link>
+       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="print.css" media="print">
   </head>
 </head>
 <body >
@@ -14,7 +18,7 @@
         <?php
             include "./adminHeader.php";
             include "./sidebar.php";
-            require '../../Controller/questionC.php';
+            require_once '../../Controller/questionC.php';
             $questionC = new questionC();
             $list = $questionC->listQuestions();
         ?>
@@ -36,7 +40,7 @@
         </form>
     </div>
 
-
+            
 
     <br>
     <br>
@@ -48,16 +52,27 @@
                 <th class="text-center">Contenu</th>
                 <th class="text-center">Id Auteur</th>
                 <th class="text-center">Date Publication</th>
+                <th class="text-center">Likes</th>
+                <th class="text-center">Dislikes</th>
+                <th class="text-center">Reports</th>
                 <th class="text-center" colspan="3">Action</th>
             </tr>
         </thead>
         <?php foreach ($list as $row){ ?>
+            <?php 
+                require 'likesCount.php';
+                require 'dislikesCount.php';
+                require 'reportsCount.php';
+            ?>
             <tr>
                 <td><?=$row["idQuestion"]?></td>
                 <td><?=$row["titre"]?></td>      
                 <td><?=$row["contenu"]?></td>  
                 <td><?=$row["id_auteur"]?></td>  
-                <td><?=$row["date_publication"]?></td>     
+                <td><?=$row["date_publication"]?></td>
+                <td><?=$likesCount?></td>
+                <td><?=$dislikesCount?></td>
+                <td><?=$reportsCount?></td>    
                 <td><a href="viewAnswers.php?idQuestion=<?= $row['idQuestion'] ?>"><button class="btn btn-primary" style="height:40px" >Réponses</button></td></a>
                 <td><a href="updateQuestionAdmin.php?idQuestion=<?= $row['idQuestion'] ?>"><button class="btn btn-primary" style="height:40px" >Edit</button></td></a>
                 <td><a href="deleteQuestionAdmin.php?idQuestion=<?= $row['idQuestion'] ?>"><button class="btn btn-danger" style="height:40px" >Delete</button></td></a>
@@ -73,6 +88,8 @@
                 Add Question
             </button>
         </a>
+        <hr><hr><hr><hr>
+        <button onclick="window.print();" id="print-btn" type="button" class="btn btn-secondary" style="height:40px;"> Print</button>
     </div>
     <br><br><br>
 

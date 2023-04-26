@@ -21,14 +21,14 @@
     if (isset ($_POST ["validate"]) AND isset($_GET['idQuestion'])){
         if (!empty ($_POST ["answer"]) && !empty($_GET['idQuestion']) && !empty($_POST ["id_auteur"])){
             $idQuestion = $_GET['idQuestion'];
-            $answer1 = new answer(NULL, $_POST ["answer"], $_POST ["id_auteur"], date('Y-m-d'), $idQuestion);
+            $answer1 = new answer(NULL, $_POST ["answer"], $_POST ["id_auteur"], date('Y-m-d H:i:s'), $idQuestion);
             $answerC->createAnswer($answer1);
             header('location:viewAnswers.php?idQuestion=' . $idQuestion);
         }
     }
 ?>
     <form action="" method="POST">
-        <label for="contenu"> Reply </label>
+        <label for="answer"> Reply </label>
         <textarea name="answer" id="answer"></textarea>
         <br>
         <label for="id_auteur"> Id auteur </label>
@@ -94,7 +94,7 @@
         cursor: pointer;
         margin-right: 10px;
     }
-    label[for="contenu"], #contenu {
+    label[for="answer"], #contenu {
         display: inline-block;
         vertical-align: top;
     }

@@ -5,7 +5,7 @@
     $idOfTheQuestion = $_GET['idQuestion'];
     if (isset ($_POST ["validate"]) AND isset($_GET['idQuestion'])){
         if (!empty ($_POST ["answer"]) && !empty($_GET['idQuestion']) && !empty($_POST ["id_auteur"])){
-          $answer1 = new answer(NULL, $_POST ["answer"], $_POST ["id_auteur"], date('Y-m-d'), $idOfTheQuestion);
+          $answer1 = new answer(NULL, $_POST ["answer"], $_POST ["id_auteur"], date('Y-m-d H:i:s'), $idOfTheQuestion);
           $answerC = new answerC();
           $answerC->createAnswer($answer1);
         }
@@ -52,7 +52,10 @@
 
   </main><!-- End #main -->
     
-    
+  <?php 
+    require 'likesCount.php';
+    require 'dislikesCount.php';
+  ?>
     <div class="card text-center">
         <div class="card-header">
         <h2><?= $id_auteur ?></h2>
@@ -61,10 +64,19 @@
     <div class="card-body">
         <h5 class="card-title"> <?= $titre ?> </h5>
         <p class="card-text"> <?= $contenu ?> </p>
-        <a href="deleteQuestion.php?idQuestion=<?= $idOfTheQuestion ?>" style="background-color: #fcc903;" class="btn btn-primary">
+        <a href="deleteQuestion.php?idQuestion=<?= $idOfTheQuestion ?>" style="background-color: #ff0000;" class="btn btn-primary">
         <i class="fa fa-trash" aria-hidden="true"></i></a>
         <a href="updateQuestion.php?idQuestion=<?= $idOfTheQuestion ?>" style="background-color: #fcc903;" class="btn btn-primary">
         <i class="fa fa-pencil" aria-hidden="true"></i></a>
+        <a href="#" style="background-color: #ff0000;" class="btn btn-primary">
+        <i class="fa fa-flag" aria-hidden="true"></i></a>
+        <br><br>
+        <a href="like.php?idQuestion=<?= $idOfTheQuestion ?>" style="background-color: #22ff00;" class="btn btn-primary">
+        <i class="fa fa-thumbs-up" aria-hidden="true"></i></a>
+        <i><?=$likesCount1?></i>
+        <a href="dislike.php?idQuestion=<?= $idOfTheQuestion ?>" style="background-color: #bcbcbc;" class="btn btn-primary">
+        <i class="fa fa-thumbs-down" aria-hidden="true"></i></a>
+        <i><?=$dislikesCount1?></i>
     </div>
 
     <div class="card-footer text-muted">
