@@ -2,6 +2,10 @@
 <?php
 
    session_start (); 
+   if (!isset($_SESSION['token']) || $_SESSION['token'] !== $_GET['token']) {
+    header('Location: ../Front/connexion.php');
+      exit();
+  }
    ?>
 
    <head>

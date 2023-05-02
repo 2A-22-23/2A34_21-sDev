@@ -3,6 +3,10 @@
 <?php
 
 session_start (); 
+if (!isset($_SESSION['token']) || $_SESSION['token'] !== $_GET['token']) {
+  header('Location: ../Front/connexion.php');
+    exit();
+}
 ?>
 <?PHP
 include "../../Controller/RoleC.php";
@@ -121,6 +125,7 @@ $listeRole=$Role1C->AfficherRoles() ;
             </ul>
           </li>
           <li><a href="about.html">About</a></li>
+          <li><a href="../Front/logout.php">Log out</a></li>
         </ul>
       </nav><!-- .navbar -->
 
@@ -271,10 +276,11 @@ $listeRole=$Role1C->AfficherRoles() ;
                 <strong>Email:</strong> info@example.com<br>
               </p>
               <div class="social-links d-flex mt-3">
-                <a href="#" class="d-flex align-items-center justify-content-center"><i class="bi bi-twitter"></i></a>
-                <a href="#" class="d-flex align-items-center justify-content-center"><i class="bi bi-facebook"></i></a>
-                <a href="#" class="d-flex align-items-center justify-content-center"><i class="bi bi-instagram"></i></a>
-                <a href="#" class="d-flex align-items-center justify-content-center"><i class="bi bi-linkedin"></i></a>
+                <a href="https://twitter.com/intent/tweet?text=Awesome%20Blog!&url=https://49ec-197-238-170-100.ngrok-free.app/YouthSpace/View/Front/formu.php" class="d-flex align-items-center justify-content-center"><i class="bi bi-twitter"></i></a>
+                <a href="https://www.facebook.com/sharer/sharer.php?u=https://49ec-197-238-170-100.ngrok-free.app/YouthSpace/View/Front/formu.php&quote=Awesome%20Blog!" class="d-flex align-items-center justify-content-center"><i class="bi bi-facebook"></i></a>
+                <a href="https://wa.me/?text=Awesome%20Blog!%5Cn%20https://49ec-197-238-170-100.ngrok-free.app/YouthSpace/View/Front/formu.php" class="d-flex align-items-center justify-content-center"><i class="bi bi-whatsapp"></i></a>
+                <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://49ec-197-238-170-100.ngrok-free.app/YouthSpace/View/Front/formu.php" class="d-flex align-items-center justify-content-center"><i class="bi bi-linkedin"></i></a>
+                <a href="https://t.me/share/url?url=https://49ec-197-238-170-100.ngrok-free.app/YouthSpace/View/Front/formu.php&text=Awesome%20blog!" class="d-flex align-items-center justify-content-center"><i class="bi bi-telegram"></i></a>
               </div>
             </div>
           </div><!-- End footer info column-->

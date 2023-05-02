@@ -12,5 +12,8 @@
 		<input type="password" id="password" name="password" required><br><br>
 		<input type="submit" value="Se connecter">
 	</form>
+	<div>
+	<a href="mot_de_passe_oublie.php">Mot de passe oublié ?</a>
+</div>
 </body>
 </html>
