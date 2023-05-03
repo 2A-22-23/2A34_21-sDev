@@ -1,5 +1,7 @@
 <?php
 require_once '../../config.php';
+require '../../Controller/questionC.php';
+$questionC = new questionC();
 
 if (isset($_GET['idQuestion']) && !empty($_GET['idQuestion'])) {
     $idOfTheQuestion = $_GET['idQuestion'];
@@ -13,10 +15,10 @@ if (isset($_GET['idQuestion']) && !empty($_GET['idQuestion'])) {
 
         if ($list->rowCount() > 0) {
             $questionsInfos = $list->fetch();
-            $titre = $questionsInfos['titre'];
-            $contenu = $questionsInfos['contenu'];
-            $id_auteur = $questionsInfos['id_auteur'];
-            $date_publication = $questionsInfos['date_publication'];   
+            $titre = $questionC->censorBadWords($questionsInfos['titre']);
+            $contenu = $questionC->censorBadWords($questionsInfos['contenu']);
+            $id_auteur = $questionC->censorBadWords($questionsInfos['id_auteur']);
+            $date_publication = $questionC->censorBadWords($questionsInfos['date_publication']); 
         }            
     } catch(PDOException $e) {
         echo $e->getMessage();

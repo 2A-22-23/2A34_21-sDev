@@ -18,70 +18,56 @@
         ?>
 
     <div id="main-content" class="container allContent-section py-4">
-        <div class="row">   
-            <div class="col-sm-3">
-                <div class="card">
-                    <i class="fa fa-list mb-2" style="font-size: 70px;"></i>
-                    <h4 style="color:white;">Total Questions</h4>
-                    <h5 style="color:white;">
-                    <?php
-                        $sql = 'SELECT * FROM `questions`';
-                        $pdo = config::getConnexion();
-                        try{
-                            $list = $pdo->prepare($sql);
-                            $list->execute();
-                            $result = $list->fetchAll();
-                            $count=0;
-                            if ($result && count($result) > 0) {
-                                foreach ($result as $row) {
-                                    $count++;
-                                }
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <canvas id="chart"></canvas>
+    <?php
+            $sql = "SELECT COUNT(idQuestion) AS nb_questions, YEAR(date_publication) AS annee, MONTH(date_publication) AS mois FROM questions GROUP BY YEAR(date_publication), MONTH(date_publication)";
+            $pdo = config::getConnexion();
+            // Exécution de la requête
+            $resultat = $pdo->query($sql);
+
+            // Initialisation des données pour le graphe
+            $labels = [];
+            $data = [];
+
+            // Récupération des données de la requête
+            while ($donnees = $resultat->fetch()) {
+                $labels[] = $donnees['mois'] . "/" . $donnees['annee'];
+                $data[] = $donnees['nb_questions'];
+            }
+
+            // Fermeture de la connexion à la base de données
+            $bdd = null;
+
+            ?>
+
+            <script>
+            // Création du graphe
+            var ctx = document.getElementById('chart').getContext('2d');
+            var chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: <?php echo json_encode($labels); ?>,
+                    datasets: [{
+                        label: 'Nombre de questions publiées par mois',
+                        data: <?php echo json_encode($data); ?>,
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
                             }
-                            echo $count;
-                        }
-                        catch(Exception $e){
-                            die('Erreur: '.$e->getMessage());
-                        }
-                    ?>
+                        }]
+                    }
+                }
+            });
+            </script>
 
-                   </h5>
-                </div>
-            </div>
-        </div>
-        
-    </div>
-
-
-    <div id="main-content" class="container allContent-section py-4">
-        <div class="row">   
-            <div class="col-sm-3">
-                <div class="card">
-                    <i class="fa fa-list mb-2" style="font-size: 70px;"></i>
-                    <h4 style="color:white;">Total Answers</h4>
-                    <h5 style="color:white;">
-                    <?php
-                        $sql = 'SELECT * FROM `answers`';
-                        $pdo = config::getConnexion();
-                        try{
-                            $list = $pdo->prepare($sql);
-                            $list->execute();
-                            $result = $list->fetchAll();
-                            $count=0;
-                            if ($result && count($result) > 0) {
-                                foreach ($result as $row) {
-                                    $count++;
-                                }
-                            }
-                            echo $count;
-                        }
-                        catch(Exception $e){
-                            die('Erreur: '.$e->getMessage());
-                        }
-                    ?>
-                   </h5>
-                </div>
-            </div>
-        </div>
         
     </div>
 

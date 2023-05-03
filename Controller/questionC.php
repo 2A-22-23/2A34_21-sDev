@@ -139,5 +139,27 @@
                 $e->getMessage();
             }
         }
+        public function censorBadWords($string) {
+            $badWordsFile = 'C:/xampp/htdocs/projet/Controller/Bad.txt';
+            $file = fopen($badWordsFile, 'r');
+            if (!$file) {
+                echo "Erreur lors de l'ouverture du fichier $badWordsFile";
+            } else {
+            $badWords = file($badWordsFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+            if ($badWords === false) {
+                // erreur lors de l'ouverture du fichier
+                return $string;
+            }
+            $words = explode(' ', $string); 
+            foreach ($words as $key => $word) {
+                if (in_array(strtolower($word), $badWords)) { 
+                    $words[$key] = str_repeat('*', strlen($word));
+                }
+            }
+            return implode(' ', $words);
+        }
+        }
+        
+        
     }
 ?>

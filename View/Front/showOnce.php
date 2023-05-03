@@ -71,12 +71,11 @@
         <a href="#" style="background-color: #ff0000;" class="btn btn-primary">
         <i class="fa fa-flag" aria-hidden="true"></i></a>
         <br><br>
-        <a href="like.php?idQuestion=<?= $idOfTheQuestion ?>" style="background-color: #22ff00;" class="btn btn-primary">
-        <i class="fa fa-thumbs-up" aria-hidden="true"></i></a>
-        <i><?=$likesCount1?></i>
-        <a href="dislike.php?idQuestion=<?= $idOfTheQuestion ?>" style="background-color: #bcbcbc;" class="btn btn-primary">
-        <i class="fa fa-thumbs-down" aria-hidden="true"></i></a>
-        <i><?=$dislikesCount1?></i>
+        <button class="btn-like" style="background-color: #22ff00;" data-question-id="<?= $row['idQuestion'] ?>"><i class="fa fa-thumbs-up" aria-hidden="true"></i></button>
+        <span class="likes-count"><?=$likesCount1?></span>
+
+        <button class="btn-dislike" style="background-color: #bcbcbc;" data-question-id="<?= $row['idQuestion'] ?>"><i class="fa fa-thumbs-down" aria-hidden="true"></i></button>
+        <span class="dislikes-count"><?=$dislikesCount1?></span>
     </div>
 
     <div class="card-footer text-muted">
@@ -86,6 +85,39 @@
     <br>
     <hr style="border: 5px solid black;">
     <br>
+
+    <script>
+      $(document).ready(function() {
+        $('.btn-like').click(function(e) {
+          e.preventDefault();
+          var questionId = $(this).data('question-id');
+          $.ajax({
+            type: 'GET',
+            url: 'like.php',
+            data: {idQuestion: questionId},
+            success: function(data) {
+              var likesCount = parseInt($('.likes-count[data-question-id='+questionId+']').text()) + 1;
+              $('.likes-count[data-question-id='+questionId+']').text(likesCount);
+            }
+          });
+        });
+
+        $('.btn-dislike').click(function(e) {
+          e.preventDefault();
+          var questionId = $(this).data('question-id');
+          $.ajax({
+            type: 'GET',
+            url: 'dislike.php',
+            data: {idQuestion: questionId},
+            success: function(data) {
+              var dislikesCount = parseInt($('.dislikes-count[data-question-id='+questionId+']').text()) + 1;
+              $('.dislikes-count[data-question-id='+questionId+']').text(dislikesCount);
+            }
+          });
+        });
+      });
+
+    </script>
 
     <form action="" method="POST">
         <label for="contenu"> Reply </label>
@@ -166,13 +198,16 @@
 <br><br>
 
 <?php foreach ($list as $row){ ?>
+  <?php
+    $contenu = $questionC->censorBadWords($row['contenu']); 
+  ?>
                 
                 <div class="card text-center">
                     <div class="card-header">
                     <h2><?= $row['id_auteur'] ?></h2>
                     </div>
                     <div class="card-body"> 
-                        <p class="card-text"> <?= $row['contenu'] ?> </p>
+                        <p class="card-text"> <?= $contenu ?> </p>
                         <a href="deleteAnswer.php?idAnswer=<?= $row['idAnswer'] ?>" style="background-color: #fcc903;" class="btn btn-primary">
                         <i class="fa fa-trash" aria-hidden="true"></i></a>
                         <a href="updateAnswer.php?idAnswer=<?= $row['idAnswer'] ?>" style="background-color: #fcc903;" class="btn btn-primary">

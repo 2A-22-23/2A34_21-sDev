@@ -11,7 +11,6 @@
 <?php include 'head.php'; ?>
     
 <body>
-
 <?php include 'header.php'; ?>
 
   <main id="main">
@@ -55,56 +54,104 @@
       </div>
     </div>
   </div>
-  </form>
+</form>
 
 
+<br>
+<br>
+
+<div style="text-align: center;">
+  <a href="createQuestion.php" style="background-color: #fcc903;" class="btn btn-primary" > 
+    <i class="fa fa-plus-square" aria-hidden="true"></i> Add Question </a>
+    </div>
+    <br><br><br>
+    <iframe src="https://www.facebook.com/plugins/share_button.php?href=https%3A%2F%2F0e85-154-107-246-183.ngrok-free.app%2Fprojet%2FView%2FFront%2FlistQuestions.php&layout&size&width=91&height=20&appId" width="91" height="20" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+    <style>
+      iframe {
+        display: block;
+        margin: auto;
+        text-align: center;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+      }
+
+    </style>
     <br>
     <br>
-    
-    <div style="text-align: center;">
-        <a href="createQuestion.php" style="background-color: #fcc903;" class="btn btn-primary" > 
-        <i class="fa fa-plus-square" aria-hidden="true"></i> Add Question </a>
+    <?php foreach ($list as $row){ ?>
+    <?php 
+          require 'likesCount.php';
+          require 'dislikesCount.php';
+          $titre = $questionC->censorBadWords($row['titre']);
+          $contenue = $questionC->censorBadWords($row['contenu']); 
+    ?>
+    <div class="card text-center">
+        <div class="card-header">
+        <h2><?= $row['id_auteur'] ?></h2>
+        </div>
+        <div class="card-body">
+            <a href="showOnce.php?idQuestion=<?= $row['idQuestion'] ?>"> <h5 class="card-title"> <?= $titre ?> </h5> </a>
+            <p class="card-text"> <?= $contenue ?> </p>
+            <a href="deleteQuestion.php?idQuestion=<?= $row['idQuestion'] ?>" style="background-color: #ff0000;" class="btn btn-primary">
+            <i class="fa fa-trash" aria-hidden="true"></i></a>
+            <a href="updateQuestion.php?idQuestion=<?= $row['idQuestion'] ?>" style="background-color: #fcc903;" class="btn btn-primary">
+            <i class="fa fa-pencil" aria-hidden="true"></i></a>
+            <a href="showOnce.php?idQuestion=<?= $row['idQuestion'] ?>" style="background-color: #fcc903;" class="btn btn-primary">
+            <i class="fa fa-reply" aria-hidden="true"></i></a>
+            <a href="report.php?idQuestion=<?= $row['idQuestion'] ?>" style="background-color: #ff0000;" class="btn btn-primary">
+            <i class="fa fa-flag" aria-hidden="true"></i></a>
+            <br><br>
+            <button class="btn-like" style="background-color: #22ff00;" data-question-id="<?= $row['idQuestion'] ?>"><i class="fa fa-thumbs-up" aria-hidden="true"></i></button>
+            <span class="likes-count"><?=$likesCount?></span>
+
+            <button class="btn-dislike" style="background-color: #bcbcbc;" data-question-id="<?= $row['idQuestion'] ?>"><i class="fa fa-thumbs-down" aria-hidden="true"></i></button>
+            <span class="dislikes-count"><?=$dislikesCount?></span>
+
+        </div>
+        <div class="card-footer text-muted">
+            <p><?= $row['date_publication'] ?></p>
+        </div>
     </div>
     <br>
+    <hr style="border: 5px solid black;">
     <br>
-                <?php foreach ($list as $row){ ?>
-                <?php 
-                      require 'likesCount.php';
-                      require 'dislikesCount.php';
-                ?>
-                <div class="card text-center">
-                    <div class="card-header">
-                    <h2><?= $row['id_auteur'] ?></h2>
-                    </div>
-                    <div class="card-body">
-                        <a href="showOnce.php?idQuestion=<?= $row['idQuestion'] ?>"> <h5 class="card-title"> <?= $row['titre'] ?> </h5> </a>
-                        <p class="card-text"> <?= $row['contenu'] ?> </p>
-                        <a href="deleteQuestion.php?idQuestion=<?= $row['idQuestion'] ?>" style="background-color: #ff0000;" class="btn btn-primary">
-                        <i class="fa fa-trash" aria-hidden="true"></i></a>
-                        <a href="updateQuestion.php?idQuestion=<?= $row['idQuestion'] ?>" style="background-color: #fcc903;" class="btn btn-primary">
-                        <i class="fa fa-pencil" aria-hidden="true"></i></a>
-                        <a href="showOnce.php?idQuestion=<?= $row['idQuestion'] ?>" style="background-color: #fcc903;" class="btn btn-primary">
-                        <i class="fa fa-reply" aria-hidden="true"></i></a>
-                        <a href="report.php?idQuestion=<?= $row['idQuestion'] ?>" style="background-color: #ff0000;" class="btn btn-primary">
-                        <i class="fa fa-flag" aria-hidden="true"></i></a>
-                        <br><br>
-                        <a href="like.php?idQuestion=<?= $row['idQuestion'] ?>" style="background-color: #22ff00;" class="btn btn-primary">
-                        <i class="fa fa-thumbs-up" aria-hidden="true"></i></a>
-                        <i><?=$likesCount?></i>
-                        <a href="dislike.php?idQuestion=<?= $row['idQuestion'] ?>" style="background-color: #bcbcbc;" class="btn btn-primary">
-                        <i class="fa fa-thumbs-down" aria-hidden="true"></i></a>
-                        <i><?=$dislikesCount?></i>
-                    </div>
-                    <div class="card-footer text-muted">
-                        <p><?= $row['date_publication'] ?></p>
-                    </div>
-                </div>
-                <br>
-                <hr style="border: 5px solid black;">
-                <br>
-                <?php
-                }
-                ?>
+    <?php
+    }
+    ?>
+    <script>
+      $(document).ready(function() {
+        $('.btn-like').click(function(e) {
+          e.preventDefault();
+          var questionId = $(this).data('question-id');
+          $.ajax({
+            type: 'GET',
+            url: 'like.php',
+            data: {idQuestion: questionId},
+            success: function(data) {
+              var likesCount = parseInt($('.likes-count[data-question-id='+questionId+']').text()) + 1;
+              $('.likes-count[data-question-id='+questionId+']').text(likesCount);
+            }
+          });
+        });
+
+        $('.btn-dislike').click(function(e) {
+          e.preventDefault();
+          var questionId = $(this).data('question-id');
+          $.ajax({
+            type: 'GET',
+            url: 'dislike.php',
+            data: {idQuestion: questionId},
+            success: function(data) {
+              var dislikesCount = parseInt($('.dislikes-count[data-question-id='+questionId+']').text()) + 1;
+              $('.dislikes-count[data-question-id='+questionId+']').text(dislikesCount);
+            }
+          });
+        });
+      });
+
+    </script>
 
         
 <br>

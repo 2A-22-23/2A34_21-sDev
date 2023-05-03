@@ -44,7 +44,6 @@
             <ul>
               <li><a href="createQuestion.php">Add Question</a></li>
               <li><a href="listQuestions.php">View Forum</a></li>
-              <li><a href="#">Tache 3</a></li>
             </ul>
           </li>
           <li class="dropdown"><a href="#"><span>Media</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
