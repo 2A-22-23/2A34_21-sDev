@@ -1,0 +1,148 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@400;500;600;700&display=swap');
+
+:root {
+  --black: #000;
+  --yellow: #ffd700;
+  --white: #fff;
+  --grey: #f5f5f5;
+  --blue: #3C91E6;
+}
+
+html {
+  overflow-x: hidden;
+}
+
+body {
+  font-family: 'Lato', sans-serif;
+  background-color: var(--grey);
+  color: var(--black);
+  margin: 0;
+  padding: 0;
+}
+
+table {
+  border-collapse: collapse;
+  width: 40%;
+  margin: 20px 0;
+  background-color: var(--white);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+th,
+td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: var(--yellow);
+  color: var(--black);
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+tr:nth-child(even) {
+  background-color: var(--grey);
+}
+
+a {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: var(--black);
+  color: var(--white);
+  border-radius: 4px;
+  text-decoration: none;
+  transition: background-color 0.3s ease-in-out;
+}
+
+a:hover {
+  background-color: var(--yellow);
+}
+
+.create-link {
+  margin: 20px 0;
+  text-align: center;
+}
+
+a {
+  text-decoration: none;
+}
+
+li {
+  list-style: none;
+}
+
+#sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 200px;
+  height: 50%;
+  background: var(--white);
+  z-index: 2000;
+  font-family: 'Lato', sans-serif;
+  transition: 0.3s ease;
+  overflow-x: hidden;
+  scrollbar-width: none;
+}
+
+#sidebar::-webkit-scrollbar {
+  display: none;
+}
+
+#sidebar.hide {
+  width: 60px;
+}
+
+#sidebar .brand {
+  font-size: 24px;
+  font-weight: 700;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  color: var(--yellow);
+  position: sticky;
+  top: 0;
+  left: 0;
+  background: var(--white);
+  z-index: 500;
+  padding-bottom: 20px;
+  box-sizing: content-box;  
+}
+
+#sidebar .brand .bx {
+  min-width: 60px;
+  display: flex;
+  justify-content: center;
+}
+
+#sidebar .side-menu {
+  width: 100%;
+  margin-top: 48px;
+}
+
+#sidebar .side-menu li {
+  height: 48px;
+  background: transparent;
+  margin-left: 6px;
+  border-radius: 48px 0 0 48px;
+  padding: 4px;
+}
+
+#sidebar .side-menu li.active {
+  background-color: #f2f2f2;
+  position: relative;
+}
+  
+  #sidebar .side-menu li.active::before {
+    content: '';
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    top: 50%;
+    left: -20px;
+    transform: translateY(-50%);
+    background-color: #ff9900;
+  }
